@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Slider</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .blur-bg {
+    backdrop-filter: blur(10px);
+  }
+</style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+<div class="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex flex-col items-center space-y-5">
+  <div id="colorDisplay" class="w-24 h-24 rounded-lg blur-bg"></div>
+  <div class="flex flex-col space-y-2 w-full">
+    <label for="red">Red: <span id="redValue">0</span></label>
+    <input type="range" id="red" min="0" max="255" value="0" class="slider">
+    
+    <label for="green">Green: <span id="greenValue">0</span></label>
+    <input type="range" id="green" min="0" max="255" value="0" class="slider">
+    
+    <label for="blue">Blue: <span id="blueValue">0</span></label>
+    <input type="range" id="blue" min="0" max="255" value="0" class="slider">
+  </div>
+  <input type="text" id="rgbValue" class="mt-2 p-2 border rounded w-full text-center" placeholder="rgb(0, 0, 0)">
+  <input type="text" id="hexValue" class="mt-2 p-2 border rounded w-full text-center" placeholder="#000000">
+  <button id="randomColor" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-300">Random Color</button>
+</div>
+
+<script>
+  const redSlider = document.getElementById('red');
+  const greenSlider = document.getElementById('green');
+  const blueSlider = document.getElementById('blue');
+  const redValue = document.getElementById('redValue');
+  const greenValue = document.getElementById('greenValue');
+  const blueValue = document.getElementById('blueValue');
+  const rgbValue = document.getElementById('rgbValue');
+  const hexValue = document.getElementById('hexValue');
+  const colorDisplay = document.getElementById('colorDisplay');
+  const randomColorBtn = document.getElementById('randomColor');
+
+  function updateColorDisplay() {
+    const r = redSlider.value;
+    const g = greenSlider.value;
+    const b = blueSlider.value;
+    const rgb = `rgb(${r}, ${g}, ${b})`;
+    const hex = `#${parseInt(r).toString(16).padStart(2, '0')}${parseInt(g).toString(16).padStart(2, '0')}${parseInt(b).toString(16).padStart(2, '0')}`;
+    
+    colorDisplay.style.backgroundColor = rgb;
+    rgbValue.value = rgb;
+    hexValue.value = hex;
+    redValue.textContent = r;
+    greenValue.textContent = g;
+    blueValue.textContent = b;
+  }
+
+  function randomColor() {
+    redSlider.value = Math.floor(Math.random() * 256);
+    greenSlider.value = Math.floor(Math.random() * 256);
+    blueSlider.value = Math.floor(Math.random() * 256);
+    updateColorDisplay();
+  }
+
+  redSlider.addEventListener('input', updateColorDisplay);
+  greenSlider.addEventListener('input', updateColorDisplay);
+  blueSlider.addEventListener('input', updateColorDisplay);
+  rgbValue.addEventListener('input', () => {
+    const rgb = rgbValue.value.match(/\d+/g).map(Number);
+    if (rgb.length === 3) {
+      redSlider.value = rgb[0];
+      greenSlider.value = rgb[1];
+      blueSlider.value = rgb[2];
+      updateColorDisplay();
+    }
+  });
+  hexValue.addEventListener('input', () => {
+    const hex = hexValue.value.replace('#', '');
+    if (hex.length === 6) {
+      redSlider.value = parseInt(hex.substring(0, 2), 16);
+      greenSlider.value = parseInt(hex.substring(2, 4), 16);
+      blueSlider.value = parseInt(hex.substring(4, 6), 16);
+      updateColorDisplay();
+    }
+  });
+  randomColorBtn.addEventListener('click', randomColor);
+
+  updateColorDisplay();
+</script>
+</body>
+</html>
