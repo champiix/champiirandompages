@@ -15,5 +15,8 @@
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h1 class="text-4xl font-bold mb-2">Random Stuff Repository</h1>
             <p class="text-gray-700 mb-4">A collection of miscellaneous scripts, snippets, and resources I've created or collected over time.</p>
+        </div>
+    </div>
+
 </body>
 </html>
